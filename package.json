@@ -1,0 +1,21 @@
+{
+  "name": "phoneinput",
+  "version": "0.0.1",
+  "description": "Format a phone input field without barfing on Android",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "browserify": "^5.11.0",
+    "jquery": "1.8.3"
+  },
+  "devDependencies": {
+    "gulp": "^3.8.7",
+    "gulp-browserify": "^0.5.0",
+    "gulp-mocha": "^1.0.0",
+    "jsdom": "^1.0.0-pre.6"
+  }
+}
