@@ -53,12 +53,13 @@ var reFormatPhoneNumber = function(phoneNumberString) {
   phoneNumber = phoneNumberString.replace(/\D/g, '').match(/^(\d{0,3})?(\d{0,3})?(\d{0,4})?$/);
   _ref = phoneNumber;
 
-
-  if (_ref !== null) {
-    areaCode = _ref[1];
-    first3 = _ref[2];
-    last4 = _ref[3];
+  if (numberOfDigits(value) >= 10) {
+    return;
   }
+
+  areaCode = _ref[1];
+  first3 = _ref[2];
+  last4 = _ref[3];
 
   text = '';
   if (areaCode !== null) {
@@ -80,6 +81,11 @@ var reFormatPhoneNumber = function(phoneNumberString) {
 
 };
 
+var numberOfDigits = function(str) {
+  var value = str.replace(/\D/g, '');
+  return value.length;
+};
+
 var restrictPhoneNumber = function(e) {
   var $target, digit, value;
 
@@ -92,8 +98,7 @@ var restrictPhoneNumber = function(e) {
     return;
   }
   value = $target.val() + digit;
-  value = value.replace(/\D/g, '');
-  if (value.length > 10) {
+  if (numberOfDigits(value) >= 10) {
     e.preventDefault();
   }
 };
