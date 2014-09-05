@@ -1,8 +1,0 @@
-framework: mocha
-before_tests: gulp bundle-tests
-src_files:
-  - app/**
-launch_in_dev:
-  - PhantomJS
-serve_files:
-  - test_bundle/test.js

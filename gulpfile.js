@@ -1,25 +1,25 @@
 var gulp = require('gulp');
-var browserify = require('gulp-browserify');
+var browserify = require('browserify');
+var connect = require('gulp-connect');
+var source = require('vinyl-source-stream');
+var mocha = require('gulp-mocha');
+var exit = require('gulp-exit');
 
 // Basic usage
 gulp.task('build', function() {
     // Single entry point to browserify
-    gulp.src('src/phoneinput.js')
-        .pipe(browserify({
-          standalone : 'phoneinput',
-        }))
-        .pipe(gulp.dest('./build'))
-});
-
-gulp.task('bundle-tests', function() {
-  gulp.src('test/*.js')
-      .pipe(browserify())
-      .pipe(gulp.dest('./test_bundle'))
+    browserify({
+      standalone: 'phoneinput',
+      entries: './src/phoneinput.js'
+    })
+    .bundle()
+    .pipe(source('phoneinput.js'))
+    .pipe(gulp.dest('./build'));
 });
 
 gulp.task('test', function() {
-  return gulp.src('test/*.js', {read: false})
-      .pipe(mocha({
-        debug: true,
-      }));
+  connect.server();
+  gulp.src('./test/test.js')
+    .pipe(mocha())
+    .pipe(exit());
 });

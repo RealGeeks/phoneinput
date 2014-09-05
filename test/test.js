@@ -1,81 +1,109 @@
-var phoneinput = require('../src/phoneinput'); var assert = require('assert'); 
-var $ = require('jquery');
+var webdriverjs = require('webdriverio'),
+    assert      = require('assert');
 
-var sendEvent = function($elem, eventType, keyCode) {
-  var event = $.Event(eventType, {keyCode: keyCode, which: keyCode});
-  var oldPreventDefault = event.preventDefault;
-  var preventDefaultCalled = false;
-  event.preventDefault = function() {
-    preventDefaultCalled = true;
-    return oldPreventDefault.apply(this, arguments);
-  };
-  $elem.trigger(event);
-  return preventDefaultCalled;
-}
-
-var typeChar = function($elem, char) {
-  var keyCode = char.charCodeAt(0);
-  var keyDownPreventDefaultCalled = sendEvent($elem, 'keydown', keyCode);
-  var keyPressPreventDefaultCalled = sendEvent($elem, 'keypress', keyCode);
-  if (keyDownPreventDefaultCalled || keyPressPreventDefaultCalled) {
-    return;
-  }
-
-  var val = $elem.val();
-  if (char === '\b') {
-    $elem.val(val.substring(0, val.length - 1));
-  }
-  else {
-    $elem.val(val + char);
-  }
+var browserStackClientOptions = {
+  desiredCapabilities: {
+    browserName: 'android',
+    version: '4.0',
+    device: 'Samsung Galaxy Nexus',
+    "browserstack.local": true,
+    "browserstack.debug": true
+  },
+  host: 'hub.browserstack.com',
+  port: 80,
+  user : process.env.BROWSERSTACK_USERNAME,
+  key: process.env.BROWSERSTACK_ACCESS_KEY,
+  logLevel: 'silent',
 };
 
-var typeChars = function($elem, text) {
-  for (i=0;i<text.length;i++) {
-    typeChar($elem, text[i]);
-  }
-};
+var localClientOptions = { desiredCapabilities: {browserName: 'chrome'} };
 
-var pasteChars = function($elem, text) {
-  $elem.val(text);
-  $elem.trigger($.Event('paste'));
-};
+describe('phoneinput', function(){
 
-describe('phoneinput', function() {
-  it('formats phone numbers', function(done) {
-    var $input = $('<input type="tel"/>');
-    phoneinput($input);
-    typeChars($input, '1231231234');
-    setTimeout(function() {
-      assert.equal($input.val(), '(123) 123 - 1234');
-      done();
-    }, 1000);
-  });
-  it('handles the backspace key', function() {
-    var $input = $('<input type="tel"/>');
-    phoneinput($input);
-    typeChars($input, '1231231234\b\b\b\b\b55555');
-    assert.equal($input.val(), '(123) 125 - 5555');
-  });
+    this.timeout(99999999);
+    var client = {};
+    var co;
 
-  it('doesnt freak out if you press the same key a lot', function() {
-    var $input = $('<input type="tel"/>');
-    phoneinput($input);
-    typeChars($input, '55555555555555555555555555555555555555555');
-    assert.equal($input.val(), '(555) 555 - 5555');
-  });
+    if (process.env.BROWSERSTACK_USERNAME) {
+      co = browserStackClientOptions;
+    }
+    else {
+      co = localClientOptions;
+    }
 
-  it('handles pasted phone numbers', function() {
-    var $input = $('<input type="tel"/>');
-    pasteChars($input, '123-123-1234');
-    phoneinput($input);
-    assert.equal($input.val(), '(123) 123 - 1234');
-  });
+    before(function(done){
+      client = webdriverjs.remote(co);
+      client.init().
+        url('http://localhost:8080')
+        .pause(1000)
+        .call(done);
+    });
 
-  it('wont let you put alpha characters', function() {
-    var $input = $('<input type="tel"/>');
-    typeChars($input, 'foobar1foo2foobar3');
-    phoneinput($input);
-    assert.equal($input.val(), '(123)');
-  });
-})
+    it('formats phone numbers', function(done) {
+      client
+        .setValue('#phoneinput', '1231231234')
+        .getValue('#phoneinput', function(err, value) {
+          assert(err === undefined);
+          assert(value === '(123) 123 - 1234');
+        })
+      .call(done);
+    });
+
+    it('handles the backspace key', function(done) {
+      client
+        .setValue('#phoneinput', '1231231234\b\b\b\b\b55555')
+        .getValue('#phoneinput', function(err, value) {
+          assert(err === undefined);
+          assert(value === '(123) 125 - 5555');
+        })
+      .call(done);
+    });
+
+    it('wont freak out if you press the same key a lot', function(done) {
+      client
+        .setValue('#phoneinput', '55555555555555555555555555555555555555555')
+        .getValue('#phoneinput', function(err, value) {
+          assert(err === undefined);
+          assert(value === '(555) 555 - 5555');
+        })
+      .call(done);
+    });
+
+    it('handles cut and paste', function(done) {
+      client
+        .setValue('#phoneinput', '1231231234')
+        .addValue('#phoneinput', ['Control', 'c'])
+        .getValue('#phoneinput', function(err, value) {
+          assert(err === undefined);
+          assert(value === '(123) 123 - 1234');
+        })
+        .addValue('#phoneinput', ['Control', 'a'])
+        .addValue('#phoneinput', ['Control', 'x'])
+        .getValue('#phoneinput', function(err, value) {
+          assert(err === undefined);
+          assert(value === '');
+        })
+        .addValue('#phoneinput', ['Control', 'v'])
+        .getValue('#phoneinput', function(err, value) {
+          assert(err === undefined);
+          assert(value === '(123) 123 - 1234');
+        })
+
+      .call(done);
+    });
+
+    it('wont let you put alpha characters', function(done) {
+      client
+        .setValue('#phoneinput', 'foobar1foo2foobar3')
+        .getValue('#phoneinput', function(err, value) {
+          assert(err === undefined);
+          assert(value === '(123) ');
+        })
+      .call(done);
+    });
+
+
+    after(function(done) {
+        client.end(done);
+    });
+});

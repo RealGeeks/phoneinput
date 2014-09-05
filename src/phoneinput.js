@@ -44,19 +44,37 @@ var restrictNumeric = function(e) {
   return !!/[\d\s]/.test(input);
 };
 
+var restrictPhoneNumber = function(e) {
+  var $target, digit, value;
+
+  $target = $(e.currentTarget);
+  digit = String.fromCharCode(e.which);
+  if (!/^\d+$/.test(digit)) {
+    return;
+  }
+  if (hasTextSelected($target)) {
+    return;
+  }
+  value = $target.val() + digit;
+  value = value.replace(/\D/g, '');
+  if (value.length > 10) {
+    return false;
+  }
+};
+
+
 var reFormatPhoneNumber = function(phoneNumberString) {
-  var areacode = null;
-  var first3 = null;
-  var last4 = null;
+  var areaCode, first3, last4, phoneNumber, text, _ref;
 
-  var phoneNumber = phoneNumberString.replace(/\D/g, '').match(/^(\d{0,3})?(\d{0,3})?(\d{0,4})?$/);
-  var _ref = phoneNumber;
+  phoneNumber = phoneNumberString.replace(/\D/g, '').match(/^(\d{0,3})?(\d{0,3})?(\d{0,4})?$/);
+/*
+  if (phoneNumber === null) {
+    return phoneNumberString.substring(0, phoneNumberString.length-1);
+  }
+  */
 
-  areaCode = _ref[1];
-  first3 = _ref[2];
-  last4 = _ref[3];
-
-  var text = '';
+  _ref = phoneNumber, phoneNumber = _ref[0], areaCode = _ref[1], first3 = _ref[2], last4 = _ref[3];
+  text = '';
   if (areaCode != null) {
     text += "(" + areaCode;
   }
@@ -73,30 +91,6 @@ var reFormatPhoneNumber = function(phoneNumberString) {
     text += "" + last4;
   }
   return text;
-
-};
-
-var numberOfDigits = function(str) {
-  var value = str.replace(/\D/g, '');
-  return value.length;
-};
-
-var restrictPhoneNumber = function(e) {
-  var $target, digit, value;
-
-  $target = $(e.currentTarget);
-  digit = String.fromCharCode(e.which);
-  if (!/^\d+$/.test(digit)) {
-    return false;
-  }
-  if (hasTextSelected($target)) {
-    return false;
-  }
-  value = $target.val() + digit;
-  if (numberOfDigits(value) >= 10) {
-    e.preventDefault();
-    return true;
-  }
 };
 
 var formatPhoneNumber = function(e) {
@@ -108,10 +102,12 @@ var formatPhoneNumber = function(e) {
   }
   $target = $(e.currentTarget);
   val = $target.val() + digit;
-  if (restrictPhoneNumber(e)) {
+  try {
+  text = reFormatPhoneNumber(val);
+  }
+  catch(error) {
     return;
   }
-  text = reFormatPhoneNumber(val);
   e.preventDefault();
   return $target.val(text);
 };
@@ -127,7 +123,7 @@ var formatBackPhoneNumber = function(e) {
   if (e.which !== 8) {
     return;
   }
-  if (($target.prop('selectionStart') !== null) && $target.prop('selectionStart') !== value.length) {
+  if (($target.prop('selectionStart') != null) && $target.prop('selectionStart') !== value.length) {
     return;
   }
   if (/\(\d$/.test(value)) {
@@ -143,7 +139,6 @@ var formatBackPhoneNumber = function(e) {
 };
 
 var formatPastePhoneNumber = function(e) {
-  console.log('in paste');
   return setTimeout(function() {
     var $target, text, val;
 
