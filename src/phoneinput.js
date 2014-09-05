@@ -67,12 +67,6 @@ var reFormatPhoneNumber = function(phoneNumberString) {
   var areaCode, first3, last4, phoneNumber, text, _ref;
 
   phoneNumber = phoneNumberString.replace(/\D/g, '').match(/^(\d{0,3})?(\d{0,3})?(\d{0,4})?$/);
-/*
-  if (phoneNumber === null) {
-    return phoneNumberString.substring(0, phoneNumberString.length-1);
-  }
-  */
-
   _ref = phoneNumber, phoneNumber = _ref[0], areaCode = _ref[1], first3 = _ref[2], last4 = _ref[3];
   text = '';
   if (areaCode != null) {
