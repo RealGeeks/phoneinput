@@ -17,6 +17,10 @@ gulp.task('build', function() {
     .pipe(gulp.dest('./build'));
 });
 
+gulp.task('serve', function() {
+  connect.server();
+});
+
 gulp.task('test', function() {
   connect.server();
   gulp.src('./test/test.js')
