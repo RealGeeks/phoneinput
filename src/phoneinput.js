@@ -15,10 +15,10 @@ var detectAndroid = function() {
 var hasTextSelected = function($target) {
   var _ref;
 
-  if (($target.prop('selectionStart') != null) && $target.prop('selectionStart') !== $target.prop('selectionEnd')) {
+  if (($target.prop('selectionStart') !== null) && $target.prop('selectionStart') !== $target.prop('selectionEnd')) {
     return true;
   }
-  if (typeof document !== "undefined" && document !== null ? (_ref = document.selection) != null ? typeof _ref.createRange === "function" ? _ref.createRange().text : void 0 : void 0 : void 0) {
+  if (typeof document !== "undefined" && document !== null ? (_ref = document.selection) !== null ? typeof _ref.createRange === "function" ? _ref.createRange().text : void 0 : void 0 : void 0) {
     return true;
   }
   return false;
@@ -50,8 +50,8 @@ var reFormatPhoneNumber = function(phoneNumberString) {
   var first3 = null;
   var last4 = null;
 
-  var phoneNumber = phoneNumberString.replace(/\D/g, '').match(/^(\d{0,3})?(\d{0,3})?(\d{0,4})?$/);
-  var _ref = phoneNumber;
+  phoneNumber = phoneNumberString.replace(/\D/g, '').match(/^(\d{0,3})?(\d{0,3})?(\d{0,4})?$/);
+  _ref = phoneNumber;
 
 
   if (_ref !== null) {
@@ -61,19 +61,19 @@ var reFormatPhoneNumber = function(phoneNumberString) {
   }
 
   text = '';
-  if (areaCode != null) {
+  if (areaCode !== null) {
     text += "(" + areaCode;
   }
-  if ((areaCode != null ? areaCode.length : void 0) === 3) {
+  if ((areaCode !== null ? areaCode.length : void 0) === 3) {
     text += ") ";
   }
-  if (first3 != null) {
+  if (first3 !== null) {
     text += "" + first3;
   }
-  if ((first3 != null ? first3.length : void 0) === 3) {
+  if ((first3 !== null ? first3.length : void 0) === 3) {
     text += " - ";
   }
-  if (last4 != null) {
+  if (last4 !== null) {
     text += "" + last4;
   }
   return text;
@@ -123,7 +123,7 @@ var formatBackPhoneNumber = function(e) {
   if (e.which !== 8) {
     return;
   }
-  if (($target.prop('selectionStart') != null) && $target.prop('selectionStart') !== value.length) {
+  if (($target.prop('selectionStart') !== null) && $target.prop('selectionStart') !== value.length) {
     return;
   }
   if (/\(\d$/.test(value)) {
