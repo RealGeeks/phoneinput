@@ -15,10 +15,10 @@ var detectAndroid = function() {
 var hasTextSelected = function($target) {
   var _ref;
 
-  if (($target.prop('selectionStart') !== null) && $target.prop('selectionStart') !== $target.prop('selectionEnd')) {
+  if (($target.prop('selectionStart') != null) && $target.prop('selectionStart') !== $target.prop('selectionEnd')) {
     return true;
   }
-  if (typeof document !== "undefined" && document !== null ? (_ref = document.selection) !== null ? typeof _ref.createRange === "function" ? _ref.createRange().text : void 0 : void 0 : void 0) {
+  if (typeof document !== "undefined" && document !== null ? (_ref = document.selection) != null ? typeof _ref.createRange === "function" ? _ref.createRange().text : void 0 : void 0 : void 0) {
     return true;
   }
   return false;
@@ -45,36 +45,31 @@ var restrictNumeric = function(e) {
 };
 
 var reFormatPhoneNumber = function(phoneNumberString) {
-  var phoneNumber, text, _ref;
   var areacode = null;
   var first3 = null;
   var last4 = null;
 
-  phoneNumber = phoneNumberString.replace(/\D/g, '').match(/^(\d{0,3})?(\d{0,3})?(\d{0,4})?$/);
-  _ref = phoneNumber;
-
-  if (numberOfDigits(value) >= 10) {
-    return;
-  }
+  var phoneNumber = phoneNumberString.replace(/\D/g, '').match(/^(\d{0,3})?(\d{0,3})?(\d{0,4})?$/);
+  var _ref = phoneNumber;
 
   areaCode = _ref[1];
   first3 = _ref[2];
   last4 = _ref[3];
 
-  text = '';
-  if (areaCode !== null) {
+  var text = '';
+  if (areaCode != null) {
     text += "(" + areaCode;
   }
-  if ((areaCode !== null ? areaCode.length : void 0) === 3) {
+  if ((areaCode != null ? areaCode.length : void 0) === 3) {
     text += ") ";
   }
-  if (first3 !== null) {
+  if (first3 != null) {
     text += "" + first3;
   }
-  if ((first3 !== null ? first3.length : void 0) === 3) {
+  if ((first3 != null ? first3.length : void 0) === 3) {
     text += " - ";
   }
-  if (last4 !== null) {
+  if (last4 != null) {
     text += "" + last4;
   }
   return text;
@@ -92,14 +87,15 @@ var restrictPhoneNumber = function(e) {
   $target = $(e.currentTarget);
   digit = String.fromCharCode(e.which);
   if (!/^\d+$/.test(digit)) {
-    return;
+    return false;
   }
   if (hasTextSelected($target)) {
-    return;
+    return false;
   }
   value = $target.val() + digit;
   if (numberOfDigits(value) >= 10) {
     e.preventDefault();
+    return true;
   }
 };
 
@@ -112,6 +108,9 @@ var formatPhoneNumber = function(e) {
   }
   $target = $(e.currentTarget);
   val = $target.val() + digit;
+  if (restrictPhoneNumber(e)) {
+    return;
+  }
   text = reFormatPhoneNumber(val);
   e.preventDefault();
   return $target.val(text);
