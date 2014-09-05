@@ -1,6 +1,5 @@
 var gulp = require('gulp');
 var browserify = require('gulp-browserify');
-var mocha = require('gulp-mocha');
 
 // Basic usage
 gulp.task('build', function() {
@@ -10,6 +9,12 @@ gulp.task('build', function() {
           standalone : 'phoneinput',
         }))
         .pipe(gulp.dest('./build'))
+});
+
+gulp.task('bundle-tests', function() {
+  gulp.src('test/*.js')
+      .pipe(browserify())
+      .pipe(gulp.dest('./test_bundle'))
 });
 
 gulp.task('test', function() {

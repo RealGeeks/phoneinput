@@ -10,7 +10,7 @@ var detectAndroid = function() {
   var appleWebKitVersion = (resultAppleWebKitRegEx === null ? null : parseFloat(regExAppleWebKit.exec(navU)[1]));
   var isAndroidBrowser = isAndroidMobile && appleWebKitVersion !== null && appleWebKitVersion < 537;
   return isAndroidBrowser;
-}
+};
 
 var hasTextSelected = function($target) {
   var _ref;
@@ -45,10 +45,21 @@ var restrictNumeric = function(e) {
 };
 
 var reFormatPhoneNumber = function(phoneNumberString) {
-  var areaCode, first3, last4, phoneNumber, text, _ref;
+  var phoneNumber, text, _ref;
+  var areacode = null;
+  var first3 = null;
+  var last4 = null;
 
-  phoneNumber = phoneNumberString.replace(/\D/g, '').match(/^(\d{0,3})?(\d{0,3})?(\d{0,4})?$/);
-  _ref = phoneNumber, phoneNumber = _ref[0], areaCode = _ref[1], first3 = _ref[2], last4 = _ref[3];
+  var phoneNumber = phoneNumberString.replace(/\D/g, '').match(/^(\d{0,3})?(\d{0,3})?(\d{0,4})?$/);
+  var _ref = phoneNumber;
+
+
+  if (_ref !== null) {
+    areaCode = _ref[1];
+    first3 = _ref[2];
+    last4 = _ref[3];
+  }
+
   text = '';
   if (areaCode != null) {
     text += "(" + areaCode;
@@ -66,6 +77,7 @@ var reFormatPhoneNumber = function(phoneNumberString) {
     text += "" + last4;
   }
   return text;
+
 };
 
 var restrictPhoneNumber = function(e) {
@@ -82,7 +94,7 @@ var restrictPhoneNumber = function(e) {
   value = $target.val() + digit;
   value = value.replace(/\D/g, '');
   if (value.length > 10) {
-    return false;
+    e.preventDefault();
   }
 };
 
@@ -127,8 +139,7 @@ var formatBackPhoneNumber = function(e) {
 };
 
 var formatPastePhoneNumber = function(e) {
-  var _this = this;
-
+  console.log('in paste');
   return setTimeout(function() {
     var $target, text, val;
 
@@ -140,10 +151,10 @@ var formatPastePhoneNumber = function(e) {
 };
 
 var applyAndroidHacks = function() {
-    $('input.phone_number').css('-webkit-user-modify','read-write').css('outline-style', 'none').css('-webkit-tap-highlight-color', 'rgba(0,0,0,0)');
-}
+  $('input.phone_number').css('-webkit-user-modify','read-write').css('outline-style', 'none').css('-webkit-tap-highlight-color', 'rgba(0,0,0,0)');
+};
 
-var phoneInput = function($elem) {
+var phoneinput = function($elem) {
   $elem.on('keypress', restrictNumeric);
   $elem.on('keypress', restrictPhoneNumber);
   $elem.on('keypress', formatPhoneNumber);
@@ -154,4 +165,4 @@ var phoneInput = function($elem) {
   }
 };
 
-module.exports = phoneInput;
+module.exports = phoneinput;
