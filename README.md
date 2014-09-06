@@ -27,7 +27,7 @@ and add the script tag:
 Make an input like this:
 
 ```html
-<iframe src="inner.html" width="500px" height="500px"></iframe>
+<input type="tel" class="phone_number" placeholder="Phone Number">
 ```
 
 then call the `phoneinput` function on the input:
@@ -44,21 +44,21 @@ then call the `phoneinput` function on the input:
 Applies a special hack to older android browsers that keeps the weird "ghost input" from appearing over the top of your normal input when used inside an iframe.  More about that bug can be found [in the android bugtracker](https://code.google.com/p/android/issues/detail?id=30964)
 
 ## Caveats
-We have to apply a hack to older android browsers that prevents the input type=tel popup keyboard from working like a telephone keypad.  It still works like a normal keyboard though.
+We have to apply a hack to older android browsers that prevents the input type=tel popup keyboard from working like a telephone keypad in those browsers.  It still works like a normal keyboard though.
 
 ## Testing
 
 phoneinput uses webdriver for testing, so you have to do a bit of setup:
 
-1. Install selenium-standalone:
-```
-npm install selenium-standalone -g
-```
-2. Start selenium-standalone:
-```
-start-selenium -debug
-```
-3. run `gulp test`
+  1. Install selenium-standalone:
+  ```
+  npm install selenium-standalone -g
+  ```
+  2. Start selenium-standalone:
+  ```
+  start-selenium -debug
+  ```
+  3. run `gulp test`
 
 
 If you want to test on browserstack, you'll need a browserstack account.  Then you can run:
