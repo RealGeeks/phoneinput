@@ -15,5 +15,5 @@
     "gulp-mocha": "^1.0.0",
     "gulp-uglifyjs": "^0.4.2",
     "webdriverio": "^2.2.1"
-  },
+  }
 }
