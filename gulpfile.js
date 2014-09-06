@@ -1,20 +1,21 @@
 var gulp = require('gulp');
-var browserify = require('browserify');
+var uglify = require('gulp-uglifyjs');
 var connect = require('gulp-connect');
-var source = require('vinyl-source-stream');
 var mocha = require('gulp-mocha');
 var exit = require('gulp-exit');
 
 // Basic usage
 gulp.task('build', function() {
     // Single entry point to browserify
-    browserify({
-      standalone: 'phoneinput',
-      entries: './src/phoneinput.js'
-    })
-    .bundle()
-    .pipe(source('phoneinput.js'))
-    .pipe(gulp.dest('./build'));
+    gulp.src('./src/*.js')
+      .pipe(uglify('phoneinput.min.js', {
+        outSourceMap: true,
+        mangle: false
+      }))
+      .pipe(gulp.dest('./dist'));
+
+    gulp.src('./src/*.js')
+      .pipe(gulp.dest('./dist'));
 });
 
 gulp.task('serve', function() {

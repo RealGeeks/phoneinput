@@ -1,5 +1,4 @@
-var $ = require('jquery');
-
+(function($) {
 var detectAndroid = function() {
   var navU = window.navigator.userAgent;
   // Android Mobile
@@ -158,4 +157,5 @@ var phoneinput = function($elem) {
   }
 };
 
-module.exports = phoneinput;
+window.phoneinput = phoneinput
+})(jQuery);
