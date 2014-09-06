@@ -45,3 +45,26 @@ Applies a special hack to older android browsers that keeps the weird "ghost inp
 
 ## Caveats
 We have to apply a hack to older android browsers that prevents the input type=tel popup keyboard from working like a telephone keypad.  It still works like a normal keyboard though.
+
+## Testing
+
+phoneinput uses webdriver for testing, so you have to do a bit of setup:
+
+1. Install selenium-standalone:
+```
+npm install selenium-standalone -g
+```
+2. Start selenium-standalone:
+```
+start-selenium -debug
+```
+3. run `gulp test`
+
+
+If you want to test on browserstack, you'll need a browserstack account.  Then you can run:
+
+```bash
+BROWSERSTACK_USERNAME=your@username.org BROWSERSTACK_ACCESS_KEY=youraccesskey gulp test
+```
+
+You can use browserstack to test some older android browsers
