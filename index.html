@@ -1,114 +1,19 @@
-<!doctype html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Phoneinput by RealGeeks</title>
+<head>
+</head>
 
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-  </head>
-  <body>
-    <div class="wrapper">
-      <header>
-        <h1>Phoneinput</h1>
-        <p>Javascript input masking library for north american phone numbers</p>
+<h3>Here is the phone input:</h3>
+  <p> <input id="phoneinput" type="tel" class="phone_number" placeholder="Phone Number"> </p>
+  <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+  <script src="dist/phoneinput.min.js"></script>
+  <script>
+  $(document).ready(function() {
+    phoneinput($('input.phone_number'));
+  });
+  </script>
 
-        <p class="view"><a href="https://github.com/RealGeeks/phoneinput">View the Project on GitHub <small>RealGeeks/phoneinput</small></a></p>
-
-
-        <ul>
-          <li><a href="https://github.com/RealGeeks/phoneinput/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/RealGeeks/phoneinput/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/RealGeeks/phoneinput">View On <strong>GitHub</strong></a></li>
-        </ul>
-      </header>
-      <section>
-        <h1>
-<a name="phoneinput" class="anchor" href="#phoneinput"><span class="octicon octicon-link"></span></a>phoneinput</h1>
-
-<p>A javascript input masking library that only supports 1 thing: north american phone numbers, and actually works pretty well on old Android browsers.</p>
-
-<p>It formats numbers like this: (123) 123 - 1234</p>
-
-<p>Requires that you have jquery installed and available as <code>window.jQuery</code></p>
-
-<p>Tested on IE8+, Android 4.0+, and modern browsers.</p>
-
-<p>Based on code from <a href="http://omarshammas.github.io/formancejs">formance.js</a> which is itself a fork of <a href="https://github.com/stripe/jquery.payment">jQuery.payment</a></p>
-
-<h2>
-<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
-
-<p>Make sure you are using jquery already:</p>
-
-<div class="highlight highlight-html"><pre><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://code.jquery.com/jquery-1.11.1.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
-</pre></div>
-
-<p>and add the script tag:</p>
-
-<div class="highlight highlight-html"><pre><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"phoneinput.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
-</pre></div>
-
-<p>Make an input like this:</p>
-
-<div class="highlight highlight-html"><pre><span class="nt">&lt;iframe</span> <span class="na">src=</span><span class="s">"inner.html"</span> <span class="na">width=</span><span class="s">"500px"</span> <span class="na">height=</span><span class="s">"500px"</span><span class="nt">&gt;&lt;/iframe&gt;</span>
-</pre></div>
-
-<p>then call the <code>phoneinput</code> function on the input:</p>
-
-<div class="highlight highlight-html"><pre>  <span class="nt">&lt;script&gt;</span>
-  <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">phoneinput</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">'input.phone_number'</span><span class="p">));</span>
-  <span class="p">});</span>
-  <span class="nt">&lt;/script&gt;</span>
-</pre></div>
-
-<h2>
-<a name="special-features" class="anchor" href="#special-features"><span class="octicon octicon-link"></span></a>Special features</h2>
-
-<p>Applies a special hack to older android browsers that keeps the weird "ghost input" from appearing over the top of your normal input when used inside an iframe.  More about that bug can be found <a href="https://code.google.com/p/android/issues/detail?id=30964">in the android bugtracker</a></p>
-
-<h2>
-<a name="caveats" class="anchor" href="#caveats"><span class="octicon octicon-link"></span></a>Caveats</h2>
-
-<p>We have to apply a hack to older android browsers that prevents the input type=tel popup keyboard from working like a telephone keypad.  It still works like a normal keyboard though.</p>
-
-<h2>
-<a name="testing" class="anchor" href="#testing"><span class="octicon octicon-link"></span></a>Testing</h2>
-
-<p>phoneinput uses webdriver for testing, so you have to do a bit of setup:</p>
-
-<ol>
-<li>Install selenium-standalone:</li>
-</ol><pre><code>npm install selenium-standalone -g
-</code></pre>
-
-<ol>
-<li>Start selenium-standalone:</li>
-</ol><pre><code>start-selenium -debug
-</code></pre>
-
-<ol>
-<li>run <code>gulp test</code>
-</li>
-</ol><p>If you want to test on browserstack, you'll need a browserstack account.  Then you can run:</p>
-
-<div class="highlight highlight-bash"><pre><span class="nv">BROWSERSTACK_USERNAME</span><span class="o">=</span>your@username.org <span class="nv">BROWSERSTACK_ACCESS_KEY</span><span class="o">=</span>youraccesskey gulp <span class="nb">test</span>
-</pre></div>
-
-<p>You can use browserstack to test some older android browsers</p>
-      </section>
-      <footer>
-        <p>This project is maintained by <a href="https://github.com/RealGeeks">RealGeeks</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
-      </footer>
-    </div>
-    <script src="javascripts/scale.fix.js"></script>
-    
-  </body>
+  <p>
+Here it is in an iframe (make sure that when you focus it, it doesn't look weird on old Android browsers
+  <iframe src="inner.html" width="500px" height="500px"></iframe>
+  </p>
 </html>
