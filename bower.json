@@ -1,0 +1,28 @@
+{
+  "name": "phoneinput",
+  "version": "0.0.1",
+  "homepage": "https://github.com/RealGeeks/phoneinput",
+  "authors": [
+    "Kevin McCarthy <me@kevinmccarthy.org>"
+  ],
+  "description": "Format a phone input field without barfing on Android",
+  "main": "dist/.*",
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "phone",
+    "input",
+    "mask",
+    "inputmask"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "app/components",
+    "test",
+    "tests"
+  ]
+}
