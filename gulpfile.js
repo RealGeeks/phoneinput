@@ -22,7 +22,7 @@ gulp.task('serve', function() {
   connect.server();
 });
 
-gulp.task('test', function() {
+gulp.task('test', ['build'], function() {
   connect.server();
   gulp.src('./test/test.js')
     .pipe(mocha())
