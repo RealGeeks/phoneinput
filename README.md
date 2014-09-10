@@ -10,6 +10,10 @@ Tested on IE8+, Android 4.0+, and modern browsers.
 
 Based on code from [formance.js](http://omarshammas.github.io/formancejs) which is itself a fork of [jQuery.payment](https://github.com/stripe/jquery.payment)
 
+## Demo
+
+See the demo here: http://realgeeks.github.io/phoneinput/
+
 ## Usage
 
 Make sure you are using jquery already:
